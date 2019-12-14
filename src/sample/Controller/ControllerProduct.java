@@ -38,7 +38,7 @@ public class ControllerProduct implements Initializable {
     public void createTable() {
         String typeArray []={"молочная","мясная"};
         String sortArray []={"1 сорт","2 сорт","3 сорт"};
-        String groupArray []={"колбасные","мясные","полуфабрикаты","сыры","молоко","творожные"};
+        String groupArray []={"колбасные","мясные","полуфабрикаты","сыры","молоко","творожные","говядина", "свинина"};
 
         table.getItems().clear();
         type.getItems().clear();

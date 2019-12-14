@@ -1,14 +1,83 @@
 package sample;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class Data {
     private int id_region;
     private int code;
     private int id;
+    private double purchase_price;
+    private double selling_price;
     private String city;
     private String area;
     private String type;
     private String name;
+    private String name_product;
     private String sort;
+    private LocalDate date;
+
+    public Data(double purchase_price, double selling_price, LocalDate date, String name_product) {
+        this.date=date;
+        this.name_product=name_product;
+        this.selling_price=selling_price;
+        this.purchase_price=purchase_price;
+    }
+
+    public Data(double purchase_price, double selling_price,  int id) {
+        this.id=id;
+        this.selling_price=selling_price;
+        this.purchase_price=purchase_price;
+    }
+
+    public double getPurchase_price() {
+        return purchase_price;
+    }
+
+    public void setPurchase_price(double purchase_price) {
+        this.purchase_price = purchase_price;
+    }
+
+    public double getSelling_price() {
+        return selling_price;
+    }
+
+    public void setSelling_price(double selling_price) {
+        this.selling_price = selling_price;
+    }
+
+    public String getName_product() {
+        return name_product;
+    }
+
+    public void setName_product(String name_product) {
+        this.name_product = name_product;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public Data(int id, String name, String name_product, double purchase_price, double selling_price, LocalDate date) {
+        this.id=id;
+        this.name=name;
+        this.name_product=name_product;
+        this.purchase_price=purchase_price;
+        this.selling_price=selling_price;
+        this.date=date;
+    }
+
+    public Data(double purchase_price, double selling_price,String name, String name_product, LocalDate date) {
+        this.purchase_price=purchase_price;
+        this.selling_price=selling_price;
+        this.name=name;
+        this.name_product=name_product;
+        this.date=date;
+    }
 
     public String getSort() {
         return sort;
