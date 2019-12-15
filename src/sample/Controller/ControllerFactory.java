@@ -29,24 +29,20 @@ public class ControllerFactory implements Initializable {
     @FXML
     private TableColumn<Data, Integer> col1, col2, col9;
     @FXML
-    private TextField id, name, code, address, telephone, name_employee;
+    private TextField id, name, code, address, telephone;
     @FXML
-    private ChoiceBox type, position, id_region;
+    private ChoiceBox type, id_region;
     private ObservableList<Data> DataTable = FXCollections.observableArrayList();
 
 
     public void createTable() {
         String typeArray []={"Мясной","Молочный"};
-        String positionArray []={"заместитель","деректор"};
 
         table.getItems().clear();
         type.getItems().clear();
-        position.getItems().clear();
         id_region.getItems().clear();
 
         type.getItems().addAll(typeArray);
-        position.getItems().addAll(positionArray);
-
 
         col1.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, Integer>("code"));
@@ -54,8 +50,6 @@ public class ControllerFactory implements Initializable {
         col4.setCellValueFactory(new PropertyValueFactory<Data, String>("name"));
         col5.setCellValueFactory(new PropertyValueFactory<Data, String>("address"));
         col6.setCellValueFactory(new PropertyValueFactory<Data, String>("telephone"));
-        col7.setCellValueFactory(new PropertyValueFactory<Data, String>("name_employee"));
-        col8.setCellValueFactory(new PropertyValueFactory<Data, String>("position_employee"));
         col9.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id_region"));
 
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM factory");
@@ -64,7 +58,7 @@ public class ControllerFactory implements Initializable {
              ResultSet rs = preparedStatement.executeQuery();) {
             while (rs.next()) {
                 DataTable.add(new Data(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4),
-                        rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8),rs.getInt(9)));
+                        rs.getString(5), rs.getString(6),rs.getInt(7)));
             }
             table.setItems(DataTable);
             while (rsRegionId.next()) {
@@ -91,9 +85,7 @@ public class ControllerFactory implements Initializable {
                 name.setText(rs.getString(4));
                 address.setText(rs.getString(5));
                 telephone.setText(rs.getString(6));
-                name_employee.setText(rs.getString(7));
-                position.setValue(rs.getString(8));
-                id_region.setValue(rs.getString(9));
+                id_region.setValue(rs.getString(7));
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -107,30 +99,26 @@ public class ControllerFactory implements Initializable {
     }
 
     private PreparedStatement preparedStatementSave() throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO factory(code,type,name,address,telephone,name_employee,position_employee,id_region) " +
-                "VALUES (?,?,?,?,?,?,?,?)");
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO factory(code,type,name,address,telephone,id_region) " +
+                "VALUES (?,?,?,?,?,?)");
         preparedStatement.setInt(1, Integer.parseInt(code.getText()));
         preparedStatement.setString(2, type.getValue().toString());
         preparedStatement.setString(3, name.getText());
         preparedStatement.setString(4, address.getText());
         preparedStatement.setString(5, telephone.getText());
-        preparedStatement.setString(6, name_employee.getText());
-        preparedStatement.setString(7, position.getValue().toString());
-        preparedStatement.setInt(8, Integer.parseInt(id_region.getValue().toString()));
+        preparedStatement.setInt(6, Integer.parseInt(id_region.getValue().toString()));
         return preparedStatement;
     }
 
     private PreparedStatement preparedStatementUpdate() throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE factory SET code=?,type=?,name=?,address=?,telephone=?,name_employee=?,position_employee=?,id_region=? WHERE id_factory=?");
+        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE factory SET code=?,type=?,name=?,address=?,telephone=?,id_region=? WHERE id_factory=?");
         preparedStatement.setInt(1, Integer.parseInt(code.getText()));
         preparedStatement.setString(2, type.getValue().toString());
         preparedStatement.setString(3, name.getText());
         preparedStatement.setString(4, address.getText());
         preparedStatement.setString(5, telephone.getText());
-        preparedStatement.setString(6, name_employee.getText());
-        preparedStatement.setString(7, position.getValue().toString());
-        preparedStatement.setInt(8, Integer.parseInt(id_region.getValue().toString()));
-        preparedStatement.setInt(9, Integer.parseInt(id.getText()));
+        preparedStatement.setInt(6, Integer.parseInt(id_region.getValue().toString()));
+        preparedStatement.setInt(7, Integer.parseInt(id.getText()));
         return preparedStatement;
     }
 

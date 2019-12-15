@@ -1,9 +1,3 @@
-CREATE TABLE information(
-    id_information BIGSERIAL,
-    purchase_price double precision,
-    selling_price double precision,
-    PRIMARY KEY (id_information)
-);
 
 CREATE TABLE price_date(
     id_price_date BIGSERIAL,
@@ -12,11 +6,12 @@ CREATE TABLE price_date(
     purchase_price double precision,
     selling_price double precision,
     date DATE,
+    name_employee VARCHAR(30),
+    position_employee VARCHAR(20),
     PRIMARY KEY (id_price_date),
     FOREIGN KEY (id_factory) REFERENCES factory(id_factory)  ON delete  set null,
     FOREIGN KEY (id_product) REFERENCES product(id_product)  ON delete  set null
 );
-
 
 CREATE TABLE product(
     id_product BIGSERIAL,
@@ -35,8 +30,6 @@ CREATE TABLE factory(
     name VARCHAR(20),
     address VARCHAR(20),
     telephone VARCHAR(20),
-    name_employee VARCHAR(30),
-    position_employee VARCHAR(20),
     id_region INT,
     PRIMARY KEY (id_factory),
     FOREIGN KEY (id_region) REFERENCES region(id_region)  ON delete  set null
@@ -48,6 +41,7 @@ CREATE TABLE region(
     area VARCHAR(20),
     PRIMARY KEY (id_region)
 );
+
 
 select * from price_date p
 inner join product pr on p.id_product=pr.id_product

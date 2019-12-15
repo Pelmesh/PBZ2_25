@@ -42,7 +42,7 @@ public class ControllerCheckPriceByDate {
             ResultSet rs = preparedStatement.executeQuery();) {
             System.out.println(preparedStatement);
             while (rs.next()) {
-                DataTable.add(new Data(rs.getDouble(4), rs.getDouble(5 ), rs.getString(16),rs.getString(9),rs.getDate(6).toLocalDate()));
+                DataTable.add(new Data(rs.getDouble(4), rs.getDouble(5 ), rs.getString(18),rs.getString(11),rs.getDate(6).toLocalDate()));
             }
             table.setItems(DataTable);
         }catch (SQLException e) {

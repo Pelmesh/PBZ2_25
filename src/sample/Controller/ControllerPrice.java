@@ -19,24 +19,28 @@ public class ControllerPrice implements Initializable {
     @FXML
     private TableView<Data> table;
     @FXML
-    private TableColumn<Data, String> col3,col2, col6;
+    private TableColumn<Data, String> col3,col2, col6,col7,col8;
     @FXML
     private TableColumn<Data, Integer> col1;
     @FXML
     private TableColumn<Data, Double> col4, col5;
     @FXML
-    private TextField id, purchase_price, selling_price;
+    private TextField id, purchase_price, selling_price,name_employee;
     @FXML
-    private ChoiceBox factory, product;
+    private ChoiceBox factory, product,position;
     @FXML
     private DatePicker date;
     private ObservableList<Data> DataTable = FXCollections.observableArrayList();
 
 
     public void createTable() {
+        String positionArray []={"заместитель","деректор"};
         table.getItems().clear();
         factory.getItems().clear();
         product.getItems().clear();
+        position.getItems().clear();
+
+        position.getItems().addAll(positionArray);
 
         col1.setCellValueFactory(new PropertyValueFactory<Data, Integer>("id"));
         col2.setCellValueFactory(new PropertyValueFactory<Data, String>("name"));
@@ -44,6 +48,8 @@ public class ControllerPrice implements Initializable {
         col4.setCellValueFactory(new PropertyValueFactory<Data, Double>("purchase_price"));
         col5.setCellValueFactory(new PropertyValueFactory<Data, Double>("selling_price"));
         col6.setCellValueFactory(new PropertyValueFactory<Data, String>("date"));
+        col7.setCellValueFactory(new PropertyValueFactory<Data, String>("name_employee"));
+        col8.setCellValueFactory(new PropertyValueFactory<Data, String>("position_employee"));
 
         try (PreparedStatement preparedStatement = conn.prepareStatement("SELECT * FROM price_date");
              PreparedStatement preparedStatementFactory = conn.prepareStatement("SELECT id_factory FROM factory");
@@ -53,7 +59,7 @@ public class ControllerPrice implements Initializable {
              ResultSet rsProduct = preparedStatementProduct.executeQuery();) {
             while (rs.next()) {
                 DataTable.add(new Data(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getDouble(4),
-                        rs.getDouble(5), rs.getDate(6).toLocalDate()));
+                        rs.getDouble(5), rs.getDate(6).toLocalDate(), rs.getString(7), rs.getString(8)));
             }
             table.setItems(DataTable);
             while (rsFactory.next()) {
@@ -82,6 +88,8 @@ public class ControllerPrice implements Initializable {
                 purchase_price.setText(rs.getString(4));
                 selling_price.setText(rs.getString(5));
                 date.setValue(rs.getDate(6).toLocalDate());
+                name_employee.setText(rs.getString(7));
+                position.setValue(rs.getString(8));
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -95,24 +103,29 @@ public class ControllerPrice implements Initializable {
     }
 
     private PreparedStatement preparedStatementSave() throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO price_date(id_factory,id_product,purchase_price,selling_price,date) " +
-                "VALUES (?,?,?,?,?)");
+        PreparedStatement preparedStatement = conn.prepareStatement("INSERT INTO price_date(id_factory,id_product,purchase_price,selling_price,date,position_employee," +
+                "name_employee) " +
+                "VALUES (?,?,?,?,?,?,?)");
         preparedStatement.setInt(1, Integer.parseInt(factory.getValue().toString()));
         preparedStatement.setInt(2,Integer.parseInt(product.getValue().toString()));
         preparedStatement.setDouble(3, Double.parseDouble(purchase_price.getText()));
         preparedStatement.setDouble(4, Double.parseDouble(selling_price.getText()));
         preparedStatement.setDate(5, Date.valueOf(date.getValue()));
+        preparedStatement.setString(6, name_employee.getText());
+        preparedStatement.setString(7, position.getValue().toString());
         return preparedStatement;
     }
 
     private PreparedStatement preparedStatementUpdate() throws SQLException {
-        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE price_date SET id_factory=?,id_product=?,purchase_price=?,selling_price=?,date=? WHERE id_price_date=?");
+        PreparedStatement preparedStatement = conn.prepareStatement("UPDATE price_date SET id_factory=?,id_product=?,purchase_price=?,selling_price=?,date=?,name_employee=?,position_employee=? WHERE id_price_date=?");
         preparedStatement.setInt(1, Integer.parseInt(factory.getValue().toString()));
         preparedStatement.setInt(2,Integer.parseInt(product.getValue().toString()));
         preparedStatement.setDouble(3, Double.parseDouble(purchase_price.getText()));
         preparedStatement.setDouble(4, Double.parseDouble(selling_price.getText()));
         preparedStatement.setDate(5, Date.valueOf(date.getValue()));;
         preparedStatement.setInt(6, Integer.parseInt(id.getText()));
+        preparedStatement.setString(7, name_employee.getText());
+        preparedStatement.setString(8, position.getValue().toString());
         return preparedStatement;
     }
 

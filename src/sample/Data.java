@@ -62,13 +62,16 @@ public class Data {
         this.date = date;
     }
 
-    public Data(int id, String name, String name_product, double purchase_price, double selling_price, LocalDate date) {
+    public Data(int id, String name, String name_product, double purchase_price, double selling_price, LocalDate date,
+                String name_employee,String position_employee) {
         this.id=id;
         this.name=name;
         this.name_product=name_product;
         this.purchase_price=purchase_price;
         this.selling_price=selling_price;
         this.date=date;
+        this.name_employee=name_employee;
+        this.position_employee=position_employee;
     }
 
     public Data(double purchase_price, double selling_price,String name, String name_product, LocalDate date) {
@@ -181,15 +184,13 @@ public class Data {
     private String name_employee;     
     private String position_employee;
 
-    public Data(int id, int code, String type, String name, String address, String telephone, String name_employee, String position_employee, int id_region) {
+    public Data(int id, int code, String type, String name, String address, String telephone, int id_region) {
         this.id=id;
         this.code=code;
         this.type=type;
         this.name=name;
         this.address=address;
         this.telephone=telephone;
-        this.name_employee=name_employee;
-        this.position_employee=position_employee;
         this.id_region=id_region;
     }
 
